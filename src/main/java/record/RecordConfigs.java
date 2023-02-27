@@ -18,6 +18,8 @@ public class RecordConfigs {
     private static final String RECORD_PATH="./clipboardRecord";
     private static final String EXT=".record";
     private static final ConcurrentHashMap<LocalDate,Records> clipboardRecordsMap;
+    private static int recordCount=0;
+    private static final int RECORD_COUNT_MAX =5;
 
 
     static {
@@ -54,6 +56,7 @@ public class RecordConfigs {
                 if(k.compareTo(record.getRecordTimeObject().toLocalDate())==0){
                     try {
                         v.addRecord(record);
+                        recordCount++;
                     } catch (Exception ignore) {
                     }
                 }
@@ -61,12 +64,20 @@ public class RecordConfigs {
         }
         else {
             Records records=new Records(LocalDate.now());
-
             try {
                 records.addRecord(record);
+                recordCount++;
             } catch (Exception ignore) {
             }
             clipboardRecordsMap.put(LocalDate.now(),records);
+        }
+        autoSave();
+    }
+
+    private static void autoSave(){
+        if(recordCount>=RECORD_COUNT_MAX){
+            saveRecords();
+            recordCount=0;
         }
     }
 }

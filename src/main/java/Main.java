@@ -17,9 +17,6 @@ public class Main {
         // JVM关闭自动保存
         Runtime.getRuntime().addShutdownHook(new Thread(RecordConfigs::saveRecords));
 
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
-        scheduledExecutorService.scheduleAtFixedRate(RecordConfigs::saveRecords,1,5, TimeUnit.SECONDS);
-
         while (true) {
             RecordConfigs.addRecord(ClipboardManager.getClipboardText());
             TimeUnit.SECONDS.sleep(2);
@@ -27,4 +24,10 @@ public class Main {
 
 
     }
+
+    private static void saveRecordsByTime(){
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
+        scheduledExecutorService.scheduleAtFixedRate(RecordConfigs::saveRecords,1,5, TimeUnit.SECONDS);
+    }
+
 }
