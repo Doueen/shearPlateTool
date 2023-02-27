@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -18,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RecordConfigs {
     private static final String RECORD_PATH="./clipboardRecord";
     private static final String EXT=".record";
-    private static ConcurrentHashMap<LocalDate,Records> clipboardRecordsMap;
+    private static final ConcurrentHashMap<LocalDate,Records> clipboardRecordsMap;
 
 
     static {
@@ -50,9 +49,7 @@ public class RecordConfigs {
 
 
     public static void addRecord(Record<String > record){
-        if (clipboardRecordsMap.entrySet().stream().anyMatch(item->{
-            return record.getRecordTimeObject().toLocalDate().compareTo(item.getKey())==0;
-        })) {
+        if (clipboardRecordsMap.entrySet().stream().anyMatch(item-> record.getRecordTimeObject().toLocalDate().compareTo(item.getKey())==0)) {
             clipboardRecordsMap.forEach((k,v)->{
                 if(k.compareTo(record.getRecordTimeObject().toLocalDate())==0){
                     try {

@@ -7,7 +7,6 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +52,7 @@ public class Records {
     }
 
 
-    public Records addRecord(Record<String> record) {
-        LocalDateTime localDateTime = record.getRecordTimeObject();
-
+    public void addRecord(Record<String> record) {
             if (record.getData().equals(headStr)) {
                 throw new RecordException("You cannot add the same record :" + headStr);
             } else {
@@ -63,7 +60,6 @@ public class Records {
                 headStr = record.getData();
             }
 
-        return this;
     }
 
     public String serialize() {

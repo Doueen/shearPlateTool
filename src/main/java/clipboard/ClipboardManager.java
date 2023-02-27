@@ -1,6 +1,5 @@
 package clipboard;
 
-import com.google.gson.Gson;
 import record.Record;
 
 import java.awt.*;
@@ -28,7 +27,7 @@ public class ClipboardManager {
              clipboard= Toolkit.getDefaultToolkit().getSystemClipboard();
         }
         Transferable  clipboardContents=clipboard.getContents(null);
-        Record<String> record=new Record<String>(LocalDateTime.now());
+        Record<String> record= new Record<>(LocalDateTime.now());
         if(clipboardContents.isDataFlavorSupported(DataFlavor.stringFlavor)){
             String content=(String) clipboardContents.getTransferData(DataFlavor.stringFlavor);
             record.setData(content);

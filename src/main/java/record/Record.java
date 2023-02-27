@@ -1,7 +1,4 @@
 package record;
-
-import com.google.gson.Gson;
-
 import java.time.LocalDateTime;
 
 /**
