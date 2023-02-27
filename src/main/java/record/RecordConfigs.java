@@ -36,6 +36,7 @@ public class RecordConfigs {
 
 
     public static void saveRecords(){
+        System.out.println("saveRecords....");
         clipboardRecordsMap.forEach((k,v)->{
             Path path=Paths.get(RECORD_PATH+ File.separator+k.toString()+EXT);
             try {
