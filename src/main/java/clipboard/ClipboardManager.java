@@ -17,21 +17,22 @@ import java.time.LocalDateTime;
  * @create 2023-02-26 15:12
  */
 public class ClipboardManager {
-   static Transferable clipboardContents;
+   static  Clipboard clipboard;
 
 
     /**
      * 得到剪切板一条文字记录
      */
     public static Record<String> getClipboardText() throws IOException, UnsupportedFlavorException {
-        if (clipboardContents==null) {
-            Clipboard clipboard= Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboardContents=clipboard.getContents(null);
+        if (clipboard==null) {
+             clipboard= Toolkit.getDefaultToolkit().getSystemClipboard();
         }
+        Transferable  clipboardContents=clipboard.getContents(null);
         Record<String> record=new Record<String>(LocalDateTime.now());
         if(clipboardContents.isDataFlavorSupported(DataFlavor.stringFlavor)){
             String content=(String) clipboardContents.getTransferData(DataFlavor.stringFlavor);
             record.setData(content);
+           // System.out.println("save :"+content);
          }
         return record;
     }
