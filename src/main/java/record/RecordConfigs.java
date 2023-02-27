@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author ZhangHongzheng
@@ -17,9 +20,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RecordConfigs {
     private static final String RECORD_PATH="./clipboardRecord";
     private static final String EXT=".record";
-    private static final ConcurrentHashMap<LocalDate,Records> clipboardRecordsMap;
-    private static int recordCount=0;
+    /**
+     * 记录多少条之后存储到硬盘
+     */
     private static final int RECORD_COUNT_MAX =5;
+    /**
+     * 自动保存时间间隔
+     */
+    private static final int AUTO_SAVE_INTERVALS=5;
+    private static  ConcurrentHashMap<LocalDate,Records> clipboardRecordsMap;
+    /**
+     * 新添加记录条数
+     */
+    private static int recordCount=0;
 
 
     static {
@@ -71,13 +84,18 @@ public class RecordConfigs {
             }
             clipboardRecordsMap.put(LocalDate.now(),records);
         }
-        autoSave();
+        autoSaveByRecordCount();
     }
 
-    private static void autoSave(){
+    private static void autoSaveByRecordCount(){
         if(recordCount>=RECORD_COUNT_MAX){
             saveRecords();
             recordCount=0;
         }
+    }
+
+    private static void autoSaveRecordsByTime(){
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
+        scheduledExecutorService.scheduleAtFixedRate(RecordConfigs::saveRecords,1,AUTO_SAVE_INTERVALS, TimeUnit.SECONDS);
     }
 }

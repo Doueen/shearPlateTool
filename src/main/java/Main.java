@@ -21,13 +21,8 @@ public class Main {
             RecordConfigs.addRecord(ClipboardManager.getClipboardText());
             TimeUnit.SECONDS.sleep(2);
         }
-
-
     }
 
-    private static void saveRecordsByTime(){
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
-        scheduledExecutorService.scheduleAtFixedRate(RecordConfigs::saveRecords,1,5, TimeUnit.SECONDS);
-    }
+
 
 }
