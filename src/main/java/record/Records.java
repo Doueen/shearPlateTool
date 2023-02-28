@@ -13,12 +13,12 @@ import java.util.List;
  * @create 2023-02-26 15:34
  */
 public class Records {
-    private final LocalDate recordDate;
+    private final String recordDate;
     private final List<Record> records = new ArrayList<>();
 
 
     public Records(LocalDate recordDate) {
-        this.recordDate = recordDate;
+        this.recordDate = recordDate.toString();
     }
 
 

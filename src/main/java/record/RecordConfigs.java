@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author ZhangHongzheng
- * @description
+ * @description 存储记录配置文件
  * @create 2023-02-26 15:39
  */
 public class RecordConfigs {
@@ -26,7 +26,7 @@ public class RecordConfigs {
     /**
      * 记录多少条之后存储到硬盘
      */
-    private static final int RECORD_COUNT_MAX =5;
+    public static final int RECORD_COUNT_MAX =3;
     /**
      * 自动保存时间间隔
      */
@@ -81,7 +81,7 @@ public class RecordConfigs {
                 if(k.compareTo(record.getRecordTimeObject().toLocalDate())==0){
                     try {
                         v.addRecord(record);
-                        recordCount++;
+                        autoSaveByRecordCount();
                     } catch (Exception ignore) {
                     }
                 }
@@ -91,16 +91,17 @@ public class RecordConfigs {
             Records records=new Records(LocalDate.now());
             try {
                 records.addRecord(record);
-                recordCount++;
+                autoSaveByRecordCount();
             } catch (Exception ignore) {
             }
             CLIPBOARD_RECORDS_MAP.put(LocalDate.now(),records);
         }
-        autoSaveByRecordCount();
+
     }
 
 
     private static void autoSaveByRecordCount(){
+        recordCount++;
         if(recordCount>=RECORD_COUNT_MAX){
             saveRecords();
             recordCount=0;
