@@ -1,5 +1,7 @@
 package record;
 
+import record.core.Record;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +20,8 @@ import java.util.concurrent.TimeUnit;
  * @create 2023-02-26 15:39
  */
 public class RecordConfigs {
-    private static final String RECORD_PATH="./clipboardRecord";
+    public static final String RECORD_PATH="./clipboardRecord";
+    public static final String RECORD_IMAGE_PATH="./clipboardRecord/image/";
     private static final String EXT=".record";
     /**
      * 记录多少条之后存储到硬盘
@@ -28,7 +31,7 @@ public class RecordConfigs {
      * 自动保存时间间隔
      */
     private static final int AUTO_SAVE_INTERVALS=5;
-    private static  ConcurrentHashMap<LocalDate,Records> clipboardRecordsMap;
+    private static final ConcurrentHashMap<LocalDate,Records> CLIPBOARD_RECORDS_MAP;
     /**
      * 新添加记录条数
      */
@@ -36,10 +39,17 @@ public class RecordConfigs {
 
 
     static {
-        clipboardRecordsMap=new ConcurrentHashMap<>();
+        CLIPBOARD_RECORDS_MAP =new ConcurrentHashMap<>();
         if(!Files.exists(Paths.get(RECORD_PATH))){
             try {
                 Files.createDirectory(Paths.get(RECORD_PATH));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (!Files.exists(Paths.get(RECORD_IMAGE_PATH))) {
+            try {
+                Files.createDirectory(Paths.get(RECORD_IMAGE_PATH));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -50,8 +60,7 @@ public class RecordConfigs {
 
 
     public static void saveRecords(){
-      //  System.out.println("saveRecords....");
-        clipboardRecordsMap.forEach((k,v)->{
+        CLIPBOARD_RECORDS_MAP.forEach((k, v)->{
             Path path=Paths.get(RECORD_PATH+ File.separator+k.toString()+EXT);
             try {
                 Files.write(path,v.serialize().getBytes(StandardCharsets.UTF_8));
@@ -63,9 +72,12 @@ public class RecordConfigs {
     }
 
 
-    public static void addRecord(Record<String > record){
-        if (clipboardRecordsMap.entrySet().stream().anyMatch(item-> record.getRecordTimeObject().toLocalDate().compareTo(item.getKey())==0)) {
-            clipboardRecordsMap.forEach((k,v)->{
+    public static void addRecord(Record record){
+        if(record==null){
+            return;
+        }
+        if (CLIPBOARD_RECORDS_MAP.entrySet().stream().anyMatch(item-> record.getRecordTimeObject().toLocalDate().compareTo(item.getKey())==0)) {
+            CLIPBOARD_RECORDS_MAP.forEach((k, v)->{
                 if(k.compareTo(record.getRecordTimeObject().toLocalDate())==0){
                     try {
                         v.addRecord(record);
@@ -82,10 +94,11 @@ public class RecordConfigs {
                 recordCount++;
             } catch (Exception ignore) {
             }
-            clipboardRecordsMap.put(LocalDate.now(),records);
+            CLIPBOARD_RECORDS_MAP.put(LocalDate.now(),records);
         }
         autoSaveByRecordCount();
     }
+
 
     private static void autoSaveByRecordCount(){
         if(recordCount>=RECORD_COUNT_MAX){

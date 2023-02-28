@@ -16,7 +16,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // JVM关闭自动保存
         Runtime.getRuntime().addShutdownHook(new Thread(RecordConfigs::saveRecords));
-
         while (true) {
             RecordConfigs.addRecord(ClipboardManager.getClipboardText());
             TimeUnit.SECONDS.sleep(2);
