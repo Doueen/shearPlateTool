@@ -13,15 +13,9 @@ import java.io.InputStreamReader;
  * @create 2023-03-02 14:19
  */
 public class ServerTest {
-    static Server server;
     public static void main(String[] args) {
 
-        MessageListener listener=new MessageListener() {
-            @Override
-            public void onMessageReceived(String message) {
-                System.out.println("接收到客户端消息:"+message);
-            }
-        };
+        MessageListener listener= message -> System.out.println("接收到客户端消息:"+message);
         Server server=new Server(8080,listener);
         server.start();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

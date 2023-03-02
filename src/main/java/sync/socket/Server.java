@@ -56,6 +56,9 @@ public class Server {
     }
 
 
+    /**
+     * 客户端处理器，处理连接到服务器的客户端
+     */
     private class ClientHandler extends Thread {
         private Socket socket;
         private BufferedReader in;
