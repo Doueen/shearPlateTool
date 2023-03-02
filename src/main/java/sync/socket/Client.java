@@ -26,7 +26,7 @@ public class Client {
         this.listener = listener;
         try {
             socket = new Socket(ip, port);
-            id=socket.getLocalAddress().toString()+socket.getLocalPort();
+            id=socket.getLocalAddress().toString()+socket.getPort();
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
             System.out.println("Connected to the server.");
