@@ -17,6 +17,10 @@ public class Records {
     private final List<Record> records = new ArrayList<>();
 
 
+    public String getRecordDate() {
+        return recordDate;
+    }
+
     public Records(LocalDate recordDate) {
         this.recordDate = recordDate.toString();
     }

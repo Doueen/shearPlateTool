@@ -31,7 +31,7 @@ public class RecordConfigs {
      * 自动保存时间间隔
      */
     private static final int AUTO_SAVE_INTERVALS=5;
-    private static final ConcurrentHashMap<LocalDate,Records> CLIPBOARD_RECORDS_MAP;
+    private static Records todayRecords;
     /**
      * 新添加记录条数
      */
@@ -39,7 +39,6 @@ public class RecordConfigs {
 
 
     static {
-        CLIPBOARD_RECORDS_MAP =new ConcurrentHashMap<>();
         if(!Files.exists(Paths.get(RECORD_PATH))){
             try {
                 Files.createDirectory(Paths.get(RECORD_PATH));
@@ -60,15 +59,13 @@ public class RecordConfigs {
 
 
     public static void saveRecords(){
-        CLIPBOARD_RECORDS_MAP.forEach((k, v)->{
-            Path path=Paths.get(RECORD_PATH+ File.separator+k.toString()+EXT);
-            try {
-                Files.write(path,v.serialize().getBytes(StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Path path=Paths.get(RECORD_PATH+ File.separator+todayRecords.getRecordDate()+EXT);
+        try {
+            Files.write(path,todayRecords.serialize().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException ignore) {
+        }
 
-        });
+
     }
 
 
@@ -76,26 +73,14 @@ public class RecordConfigs {
         if(record==null){
             return;
         }
-        if (CLIPBOARD_RECORDS_MAP.entrySet().stream().anyMatch(item-> record.getRecordTimeObject().toLocalDate().compareTo(item.getKey())==0)) {
-            CLIPBOARD_RECORDS_MAP.forEach((k, v)->{
-                if(k.compareTo(record.getRecordTimeObject().toLocalDate())==0){
-                    try {
-                        v.addRecord(record);
-                        autoSaveByRecordCount();
-                    } catch (Exception ignore) {
-                    }
-                }
-            });
+        if(todayRecords==null){
+            todayRecords=new Records(LocalDate.now());
         }
-        else {
-            Records records=new Records(LocalDate.now());
-            try {
-                records.addRecord(record);
-                autoSaveByRecordCount();
-            } catch (Exception ignore) {
-            }
-            CLIPBOARD_RECORDS_MAP.put(LocalDate.now(),records);
+        if (!todayRecords.getRecordDate().equals(LocalDate.now().toString())){
+            todayRecords= new Records(LocalDate.now());
         }
+        todayRecords.addRecord(record);
+        autoSaveByRecordCount();
 
     }
 
@@ -108,8 +93,5 @@ public class RecordConfigs {
         }
     }
 
-    private static void autoSaveRecordsByTime(){
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
-        scheduledExecutorService.scheduleAtFixedRate(RecordConfigs::saveRecords,1,AUTO_SAVE_INTERVALS, TimeUnit.SECONDS);
-    }
+
 }
