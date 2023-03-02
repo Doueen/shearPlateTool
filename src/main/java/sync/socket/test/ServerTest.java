@@ -16,7 +16,7 @@ public class ServerTest {
     public static void main(String[] args) {
 
         MessageListener listener= message -> System.out.println("接收到客户端消息:"+message);
-        Server server=new Server(8080,listener);
+        Server server=new Server(1111,listener);
         server.start();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line;

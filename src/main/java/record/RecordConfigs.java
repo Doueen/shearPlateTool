@@ -9,10 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author ZhangHongzheng
@@ -27,10 +24,7 @@ public class RecordConfigs {
      * 记录多少条之后存储到硬盘
      */
     public static final int RECORD_COUNT_MAX =3;
-    /**
-     * 自动保存时间间隔
-     */
-    private static final int AUTO_SAVE_INTERVALS=5;
+
     private static Records todayRecords;
     /**
      * 新添加记录条数
