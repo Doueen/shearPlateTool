@@ -17,18 +17,15 @@ import java.util.List;
 
 public class Server {
     private ServerSocket serverSocket;
-    private List<ClientHandler> clients = new ArrayList<>();
-    private MessageListener listener;
-    private int port;
+    private final List<ClientHandler> clients = new ArrayList<>();
+    private final MessageListener listener;
+    private final int port;
 
     public Server(int port, MessageListener listener) {
         this.listener = listener;
         this.port = port;
     }
 
-    public Server(int port){
-        this.port = port;
-    }
 
     public void start(){
         new Thread(()->{
@@ -49,8 +46,18 @@ public class Server {
     }
 
 
-    public synchronized void broadcast(String message) {
+    public synchronized void broadcastAll(String message) {
         for (ClientHandler client : clients) {
+            client.sendMessage(message);
+        }
+    }
+
+    public void broadcastIgnoreById(String message,String id){
+        for (ClientHandler client : clients) {
+          String clientId=  client.getClientId();
+            if(clientId.equals(id)){
+                continue;
+            }
             client.sendMessage(message);
         }
     }
@@ -60,9 +67,13 @@ public class Server {
      * 客户端处理器，处理连接到服务器的客户端
      */
     private class ClientHandler extends Thread {
-        private Socket socket;
+        private final Socket socket;
         private BufferedReader in;
         private PrintWriter out;
+
+        public String getClientId(){
+            return socket.getLocalAddress().toString()+socket.getLocalPort();
+        }
 
         public ClientHandler(Socket socket) {
             this.socket = socket;
@@ -95,4 +106,3 @@ public class Server {
 
 
 }
-

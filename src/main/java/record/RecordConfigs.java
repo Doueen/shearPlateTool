@@ -74,6 +74,7 @@ public class RecordConfigs {
             todayRecords= new Records(LocalDate.now());
         }
         todayRecords.addRecord(record);
+        // 添加完成写入到内存
         autoSaveByRecordCount();
 
     }

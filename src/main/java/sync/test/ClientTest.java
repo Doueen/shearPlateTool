@@ -1,7 +1,6 @@
-package sync.socket.test;
+package sync.test;
 
 import sync.socket.Client;
-import sync.socket.MessageListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.io.InputStreamReader;
  */
 public class ClientTest {
     public static void main(String[] args) {
-        Client client = new Client(message -> System.out.println("接收到服务端的消息："+message));
+        Client client = new Client("localhost",8080,message -> System.out.println("接收到服务端的消息："+message));
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line;

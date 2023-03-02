@@ -5,6 +5,7 @@ import record.core.ImageRecord;
 import record.core.Record;
 import record.core.StringRecord;
 import record.utils.ImageUtil;
+import sync.socket.ClipboardClientManager;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -31,11 +32,19 @@ public class ClipboardManager {
     static String headString;
     static Clipboard clipboard;
 
+    public static Record getClipboardRecord() throws IOException, UnsupportedFlavorException {
+        Record record = getClipboardContent();
+        // 发送record
+        if(record!=null){
+            ClipboardClientManager.sendRecord(record);
+        }
+        return  record;
+    }
 
     /**
      * 得到剪切板一条记录
      */
-    public static Record getClipboardText() throws IOException, UnsupportedFlavorException {
+    private static Record getClipboardContent() throws IOException, UnsupportedFlavorException {
         if (clipboard == null) {
             clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         }
@@ -62,14 +71,14 @@ public class ClipboardManager {
                     headImage = image;
                 }
             }
-            String imageFilePath = getImageName(RecordConfigs.RECORD_IMAGE_PATH + record.getRecordTimeObject());
+            String imageFilePath = genImageName(RecordConfigs.RECORD_IMAGE_PATH + record.getRecordTimeObject());
             record.initRecord(image, imageFilePath);
             record.setData(imageFilePath);
         }
         return record;
     }
 
-    private static String getImageName(String name) {
+    private static String genImageName(String name) {
         return name.replace(":", "") + ".png";
     }
 

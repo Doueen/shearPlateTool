@@ -16,11 +16,17 @@ public class Client {
     private BufferedReader in;
     private PrintWriter out;
     private MessageListener listener;
+    private String id;
 
-    public Client(MessageListener listener) {
+    public String getId() {
+        return id;
+    }
+
+    public Client(String ip, int port, MessageListener listener) {
         this.listener = listener;
         try {
-            socket = new Socket("localhost", 8080);
+            socket = new Socket(ip, port);
+            id=socket.getLocalAddress().toString()+socket.getLocalPort();
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
             System.out.println("Connected to the server.");

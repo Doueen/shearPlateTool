@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * @description
  * @create 2023-02-28 10:18
  */
-public abstract class DefaultRecord implements Record {
+public  class DefaultRecord implements Record {
 
     public DefaultRecord(LocalDateTime recordTime) {
         this.recordTime = recordTime.toString();
@@ -19,6 +19,8 @@ public abstract class DefaultRecord implements Record {
     protected String recordTime;
 
     protected RecordType recordType;
+
+    protected String data;
 
     @Override
     public RecordType getRecordType() {
@@ -46,7 +48,9 @@ public abstract class DefaultRecord implements Record {
      * @param data 记录数据
      */
     @Override
-    public abstract void setData(Object data);
+    public  void setData(Object data){
+        this.data=(String) data;
+    };
 
     /**
      * 得到记录数据
@@ -54,7 +58,16 @@ public abstract class DefaultRecord implements Record {
      * @return 记录数据
      */
     @Override
-    public abstract Object getData();
+    public  Object getData(){
+        return  data;
+    }
+
+    @Override
+    public void initRecord(Object data, String filePath) {
+
+    }
+
+
 
 
 }

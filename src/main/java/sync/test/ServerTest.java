@@ -1,4 +1,4 @@
-package sync.socket.test;
+package sync.test;
 
 import sync.socket.MessageListener;
 import sync.socket.Server;
@@ -22,7 +22,7 @@ public class ServerTest {
         String line;
         try {
             while ((line = reader.readLine()) != null) {
-                server.broadcast(line);
+                server.broadcastAll(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
