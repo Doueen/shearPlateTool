@@ -31,13 +31,13 @@ public class Server {
         new Thread(()->{
             try {
                 serverSocket = new ServerSocket(port);
-                System.out.println("Server started.");
+                System.out.println("Server started,port:"+ port);
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
                     ClientHandler clientHandler = new ClientHandler(clientSocket);
                     clients.add(clientHandler);
                     clientHandler.start();
-                    System.out.println("Client connected.");
+                    System.out.println("Client connected, id:"+clientHandler.getClientId());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
