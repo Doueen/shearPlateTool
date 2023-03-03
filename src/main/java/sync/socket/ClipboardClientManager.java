@@ -19,7 +19,7 @@ public class ClipboardClientManager {
     private static  MessageListener listener = new MessageListener() {
         @Override
         public void onMessageReceived(String message) {
-           // System.out.println("ClipboardClientManager receive message, parsec message;record message:"+ message);
+            System.out.println("ClipboardClientManager receive message, parsec message;record message:"+ message);
             // 解析
             RecordMessage recordMessage = RecordMessage.parseMessage(message);
             //TODO 写入到剪切板

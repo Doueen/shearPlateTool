@@ -71,6 +71,7 @@ public class Server {
         private BufferedReader in;
         private PrintWriter out;
 
+        // 得到连接到服务器上的客户端ip和port
         public String getClientId(){
             return socket.getLocalAddress().toString()+socket.getLocalPort();
         }
@@ -95,7 +96,7 @@ public class Server {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("client socket disconnect!:"+e.getMessage());
             }
         }
 
