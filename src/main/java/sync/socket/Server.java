@@ -100,6 +100,7 @@ public class Server {
             }
         }
 
+
         public void sendMessage(String message) {
             out.println(message);
         }
