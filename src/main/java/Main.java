@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args)  {
+
         // JVM关闭自动保存
         Runtime.getRuntime().addShutdownHook(new Thread(RecordConfigs::saveRecords));
         ExecutorService executorService = Executors.newFixedThreadPool(10);
